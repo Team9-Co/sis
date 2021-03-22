@@ -9,7 +9,7 @@ app = Flask(__name__)
 fe = FeatureExtractor()
 
 
-@app.route('/search', methods=['POST'])
+@app.route('/api/image/search', methods=['POST'])
 def simple_image_search():
     file = request.files['query_img']
     tenant = request.form.get('tenant')
