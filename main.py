@@ -18,6 +18,8 @@ def simple_image_search():
     # Check and make tenant folder
     Path(feature_path).mkdir(parents=True, exist_ok=True)
 
+    query = fe.extract(Image.open(file.stream))
+
     features = []
     filenames = []
     for feature in Path(feature_path).glob("*.npy"):
@@ -25,13 +27,15 @@ def simple_image_search():
         filenames.append(feature.stem)
     features = np.array(features)
 
-    # Run search
-    query = fe.extract(Image.open(file.stream))
-    # L2 distances to features
-    dists = np.linalg.norm(features - query, axis=1)
-    ids = np.argsort(dists)[:5]  # Top 5 results
-    scores_tenant = [
-        {"item_id": str(filenames[id]), "dist": str(dists[id])} for id in ids]
+    if len(features) == 0:
+        scores_tenant = []
+    else:
+        # L2 distances to features
+        dists = np.linalg.norm(features - query, axis=1)
+        # ids = np.argsort(dists)[:5]  # Top 5 results
+        ids = np.argsort(dists)  # All results
+        scores_tenant = [
+            {"item_id": str(filenames[id]), "dist": str(dists[id])} for id in ids]
 
     # Save feature
     feature_path = feature_path + "/" + \
