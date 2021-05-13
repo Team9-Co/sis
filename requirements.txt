@@ -2,3 +2,4 @@ Pillow~=8.1.2
 Flask~=1.1.2
 tensorflow>=2.0.0
 numpy~=1.19.5
+pandas~=1.2.4
